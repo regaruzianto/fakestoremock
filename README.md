@@ -2,6 +2,8 @@ Tokomadura is a e-commerce website project
 
 This project is e-commerce website built with react and API from fakeapi.platzi.com. It provides a platform for users to browse, search, and purchase a variety of products online, and with features like product categorization, a shopping cart, secure checkout, and user account management.
 
+https://fakestoremock.vercel.app/
+
 ### you can use username and password below to login:
 email: john@mail.com \
 password: changeme
