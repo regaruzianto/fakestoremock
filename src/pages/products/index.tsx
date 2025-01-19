@@ -3,27 +3,41 @@ import { GetServerSideProps } from 'next';
 import { Card, CardContent, CardMedia, Grid, Grid2, Typography, Pagination, CardActionArea } from '@mui/material';
 import { ProductsData } from '@/Interface/interface';
 import { useRouter } from 'next/router';
+import { Category } from '@mui/icons-material';
 
 
-interface ProductsProps {
+interface PageProps {
     products : ProductsData[];
+    categories : string[];
 }
 
 
 
-function Products({products}: ProductsProps) {
+function Products({products,categories}: PageProps) {
     const router = useRouter()
     
     const handleclick = (item: ProductsData) => {
         router.push(`/products/${item.id}`)
     }
 
+    const handleClickcategory = (category: string) => {
+        router.push(`/category/${category}`)
+    }
+
 
   return (
     <div className='flex flex-col items-center justify-center p-8 space-y-8 max-w-6xl m-auto'>
+        
+        <div>
+            <h1 className='m-2'>Category Products</h1>
+            <ul className='flex space-x-4 place-self-center'>
+                {categories.map((category) => (<li key={category} onClick={()=> handleClickcategory(category)} className='no-underline border-green-500 border-2 px-4 py-1 rounded-full hover:bg-green-500 hover:text-white cursor-pointer '>{category}</li>))}
+            </ul>
+
+        </div>
         <Grid2 container spacing={2} sx={{justifyContent : 'center'}}>
         {products.map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={2}  >
+            <Grid key={product.id} xs={12} sm={6} md={4} lg={2}  >
             <CardActionArea>
                 <Card onClick={()=>handleclick(product)}  sx={{ width: 200, height: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <CardMedia
@@ -68,10 +82,14 @@ export default Products
 export const getServerSideProps: GetServerSideProps = async () => {
     const response = await fetch ("https://fakestoreapi.com/products");
     const products = await response.json();
+
+    const responseCategory = await fetch ("https://fakestoreapi.com/products/categories");
+    const categories = await responseCategory.json();
    
     return{
         props :{
             products,
+            categories
         }
     };
 };

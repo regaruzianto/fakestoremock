@@ -1,3 +1,4 @@
+import { string } from "yup";
 
 export interface LoginData {
     email : string,
@@ -11,11 +12,6 @@ export interface RegisterData {
     avatar :string,
 }
 
-export interface CategoryData {
-    id : number,
-    name : string,
-    image : string,
-} 
 
 export interface ProductsData {
     id : number,

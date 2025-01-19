@@ -29,8 +29,8 @@ function Navbar() {
       <div className="container max-w-7xl mx-auto px-24 flex justify-between items-center">
           
         <div >        
-            <Link href={'/products'} className='text-gray-500 hover:text-green-600'>
-             <h1>Semua Produk</h1>
+            <Link href={'/category'} className='text-gray-500 hover:text-green-600'>
+             <h1>Semua kategori</h1>
             </Link>             
         </div>
         
