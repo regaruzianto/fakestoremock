@@ -1,16 +1,18 @@
 import React from 'react'
 import { ProductsData } from '@/Interface/interface'
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
 import CategoryProducts from '@/components/CategoryProducts'
 
 
 interface CategoryProductsProps {
   categories : string[],
-  products : ProductsData[] 
+  products : ProductsData[], 
 }
 
 function categoryName({products,categories}:CategoryProductsProps) {
+
+
   return (
     <div>
         <CategoryProducts products={products} categories={categories} />
