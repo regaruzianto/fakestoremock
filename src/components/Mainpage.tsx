@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import gambar from '../assets/gambar.png'
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import grill from '../assets/grill.png';
 import hedphone from '../assets/hedphone.png';
 import hoodie from '../assets/hoodie.png';
 import NB from '../assets/NB.png';
 import relax from '../assets/relax.png';
-
+import CategoryProducts from './CategoryProducts';
+import { CategoryProductsProps } from '@/Interface/interface';
+import { products } from '@/pages/api/Api';
+import { category } from '@/pages/api/Api';
+import { ProductsData } from '@/Interface/interface';
 
 
 function Mainpage() {
@@ -16,6 +20,8 @@ function Mainpage() {
   const [imageIndex,setImageIndex] = useState(0);
   const carouselImages = [gambar,grill,hedphone,hoodie,NB,relax];
   const interval = 3000;
+  const [productProps, setProductProps] = useState<ProductsData[]>([]);
+  const [categoryProps, setCategoryProps] = useState<string[]>([]);
 
 
   const handleClick = ()=>{
@@ -36,9 +42,30 @@ function Mainpage() {
 
     return () => clearInterval(slideInterval);
   }, [imageIndex, interval]);
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      const productResponse = await products();
+      setProductProps(productResponse);
+      console.log(productResponse);
+
+      const categoryResponse = await category();
+      setCategoryProps(categoryResponse);
+      console.log(categoryResponse);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+    fetchData();
+  }, []);
+
+
+
+
   return (
-    <div className="flex items-center justify-center my-6">
+    <div className="flex flex-col items-center justify-center my-6">
       <div className="flex w-full max-w-6xl p-4">
         <div className="w-1/2 flex justify-center ">
           {/* <Image src={gambar} alt="Deskripsi Gambar" className="max-w-md object-cover" width={500} height={500} loading="lazy"/> */}
@@ -69,6 +96,9 @@ function Mainpage() {
           </div>
         </div>
       </div>
+    
+      <CategoryProducts  products={productProps} categories={categoryProps}/>
+    
     </div>
   );
 }

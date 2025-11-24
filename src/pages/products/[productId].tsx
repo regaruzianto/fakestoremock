@@ -79,8 +79,23 @@ function productId({products}: ProductsProps) {
 export default productId
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
-    const response = await fetch (`https://fakestoreapi.com/products/${params?.productId}`);
-    const products = await response.json();
+
+    let products : ProductsData[] = [];
+    try {
+        const response = await fetch (`https://fakestoreapi.com/products/${params?.productId}`);
+
+        if (!response.ok) {
+            const html = await response.text();
+            console.error("Products API Error:", response.status, html);
+            return { notFound: true };
+        }
+
+        products = await response.json();
+
+    }catch(error){
+        console.log(error);
+    }
+
     console.log(products)
     return{
         props :{

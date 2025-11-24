@@ -3,25 +3,23 @@ import { ProductsData } from '@/Interface/interface';
 import { Grid2, Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
 // import { useRouter, useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
+import { CategoryProductsProps } from '@/Interface/interface';
 
 
 
-
-interface CategoryProductsProps {
-  categories : string[],
-  products : ProductsData[],
-
-}
 
 
 function CategoryProducts({categories, products}: CategoryProductsProps) {
 
   const router = useRouter()
-  const { categoryName: currentCategory } = router.query; 
+  // const { categoryName: currentCategory } = router.query; 
 
-  const categorySlug = Array.isArray(currentCategory)
-  ? currentCategory[0]
-  : currentCategory;
+  // const categorySlug = Array.isArray(currentCategory)
+  // ? currentCategory[0]
+  // : currentCategory;
+
+
+  const currentCategory = router.query.categoryName ?? "";
 
 
   const handleClick = (item:ProductsData) => {
@@ -34,13 +32,13 @@ function CategoryProducts({categories, products}: CategoryProductsProps) {
 
   return (
     <>
-      <div className='w-[1200px] place-self-center my-6'>
+      <div className='w-[1200px] place-self-center my-8'>
         <div className='flex gap-4'>
           <div className='w-[15vw] flex flex-col gap-3'>
             <h1 className='text-lg font-bold'>Category</h1>
             <ul className='flex flex-col gap-5'>
               {categories.map((category) => (<li key={category} onClick={()=> handleClickCategory(category)} 
-              className={`no-underline p-2 hover:opacity-50 cursor-pointer ${category === categorySlug ? 'text-green-500 font-bold': ' '}`}>{category}</li>))}
+              className={`no-underline p-2 hover:opacity-50 cursor-pointer ${category === currentCategory ? 'text-green-500 font-bold': ' '}`}>{category}</li>))}
             </ul>
             <div className='w-full bg-gray-300 h-[2px] my-6'></div>
           </div>

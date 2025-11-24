@@ -1,14 +1,9 @@
 import React from 'react'
 import { ProductsData } from '@/Interface/interface'
 import { GetServerSideProps } from 'next'
-import { useParams } from 'next/navigation'
 import CategoryProducts from '@/components/CategoryProducts'
+import { CategoryProductsProps } from '@/Interface/interface'
 
-
-interface CategoryProductsProps {
-  categories : string[],
-  products : ProductsData[], 
-}
 
 function categoryName({products,categories}:CategoryProductsProps) {
 
@@ -24,12 +19,41 @@ export default categoryName
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
     
-    const response = await fetch (`https://fakestoreapi.com/products/category/${params?.categoryName}`);
-    const products = await response.json();
-    console.log(products)
+  let products : ProductsData[] = [];
+  let categories : string[] = [];
+
+
+  try {
+    const categoryName = params?.categoryName
+    const response = await fetch (`https://fakestoreapi.com/products/category/${categoryName}`);
+
+    if (!response.ok) {
+      
+      const html = await response.text();                                 
+
+      console.error("Products API Error:", response.status, html);
+      return { notFound: true };
     
+    }else {
+      products = await response.json();
+    }
+
     const responseCategory = await fetch ("https://fakestoreapi.com/products/categories");
-    const categories = await responseCategory.json();
+
+    if(!responseCategory.ok) {
+      
+      const html = await responseCategory.text();                                 
+
+      console.error("Categories API Error:", responseCategory.status, html);
+      return { notFound: true };
+    
+    }else {
+      categories = await responseCategory.json();
+    }
+  
+  }catch (error) {
+    console.error("FETCH FAILED:", error);
+  }
     
     return{
         props :{
