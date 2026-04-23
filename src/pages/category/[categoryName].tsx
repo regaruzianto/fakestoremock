@@ -5,7 +5,7 @@ import CategoryProducts from '@/components/CategoryProducts'
 import { CategoryProductsProps } from '@/Interface/interface'
 
 
-function categoryName({products,categories}:CategoryProductsProps) {
+function CategoryName({products,categories}:CategoryProductsProps) {
 
 
   return (
@@ -15,7 +15,7 @@ function categoryName({products,categories}:CategoryProductsProps) {
   )
 }
 
-export default categoryName
+export default CategoryName
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
     
