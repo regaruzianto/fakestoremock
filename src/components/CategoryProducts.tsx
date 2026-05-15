@@ -4,20 +4,30 @@ import { Grid2, Card, CardMedia, CardContent, Typography, CardActionArea } from 
 // import { useRouter, useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { CategoryProductsProps } from '@/Interface/interface';
+<<<<<<< HEAD
+=======
+import Image from 'next/image';
+>>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
 
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
 
 function CategoryProducts({categories, products}: CategoryProductsProps) {
 
   const router = useRouter()
-  const { categoryName: currentCategory } = router.query; 
+  // const { categoryName: currentCategory } = router.query; 
 
-  const categorySlug = Array.isArray(currentCategory)
-  ? currentCategory[0]
-  : currentCategory;
+  // const categorySlug = Array.isArray(currentCategory)
+  // ? currentCategory[0]
+  // : currentCategory;
+
+
+  const currentCategory = router.query.categoryName ?? "";
 
 
   const handleClick = (item:ProductsData) => {
@@ -30,13 +40,13 @@ function CategoryProducts({categories, products}: CategoryProductsProps) {
 
   return (
     <>
-      <div className='w-[1200px] place-self-center my-6'>
+      <div className='w-[1200px] place-self-center my-8'>
         <div className='flex gap-4'>
           <div className='w-[15vw] flex flex-col gap-3'>
             <h1 className='text-lg font-bold'>Category</h1>
-            <ul className='flex flex-col gap-5'>
+            <ul className='flex flex-col gap-1.5'>
               {categories.map((category) => (<li key={category} onClick={()=> handleClickCategory(category)} 
-              className={`no-underline p-2 hover:opacity-50 cursor-pointer ${category === categorySlug ? 'text-green-500 font-bold': ' '}`}>{category}</li>))}
+              className={`no-underline p-2 hover:opacity-50 cursor-pointer ${category === currentCategory ? 'text-green-500 font-bold': ' '}`}>{category}</li>))}
             </ul>
             <div className='w-full bg-gray-300 h-[2px] my-6'></div>
           </div>
@@ -47,14 +57,16 @@ function CategoryProducts({categories, products}: CategoryProductsProps) {
                 <Grid2 key={product.id} sx={{ display: 'flex',  justifyContent: 'center',  alignItems: 'center'}} >
                   <CardActionArea>
                     <Card onClick={()=> handleClick(product)} sx={{ width: 200, height: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding : '8px'}}>
-                      <CardMedia
+                      {/* <CardMedia
                         component="img"
                         sx={{ height:"130px", objectFit: "contain"}}
                         image={product.image}
                         alt={product.title}
-                      />
+                        
+                      /> */}
+                      <Image src={product.image} alt='productImage' height={140}  width={86} style={{ minHeight : 140 , objectFit: "contain" }}/>
                       <CardContent sx={{ padding : '8px', width: '100%'}}>
-                        <Typography gutterBottom variant="h6" component="div" sx={{ height : '80px', letterSpacing : '0px', lineHeight : '1.1rem' ,fontSize : '0.85rem', textAlign:'left'}}>
+                        <Typography gutterBottom variant="h6" sx={{display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden', letterSpacing : '0px', lineHeight : '1.1rem' ,fontSize : '0.85rem', textAlign:'left', marginBottom: "2em"}}>
                           {product.title}
                         </Typography>
 

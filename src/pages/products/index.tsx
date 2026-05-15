@@ -62,6 +62,7 @@ function Products() {
   };
 
   return (
+<<<<<<< HEAD
     <div className='flex flex-col items-center justify-center p-8 space-y-8 max-w-7xl m-auto'>
       
       {/* CATEGORY */}
@@ -69,6 +70,15 @@ function Products() {
         <h1 className='text-2xl font-bold mb-4'>
           Category Products
         </h1>
+=======
+    <div className='flex flex-col items-center justify-center p-8 space-y-8 max-w-6xl m-auto'>
+        
+        <div>
+            <h1 className='m-2 text-center mb-4'>Category Products</h1>
+            <ul className='flex space-x-4 place-self-center'>
+                {categories.map((category) => (<li key={category} onClick={()=> handleClickcategory(category)} className='no-underline border-green-500 border-2 px-4 py-1 rounded-full hover:bg-green-500 hover:text-white cursor-pointer '>{category}</li>))}
+            </ul>
+>>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
 
         <ul className='flex flex-wrap gap-3 justify-center'>
           {categories.map((category) => (
@@ -189,4 +199,52 @@ function Products() {
   );
 }
 
+<<<<<<< HEAD
 export default Products;
+=======
+export default Products
+
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    let products : ProductsData[] = [];
+    let categories : string[] = [];
+
+
+  try {
+    const response = await fetch ("https://fakestoreapi.com/products");
+
+    if (!response.ok) {
+      
+      const html = await response.text();                                 
+
+      console.error("Products API Error:", response.status, html);
+      return { notFound: true };
+    
+    }else {
+      products = await response.json();
+    }
+
+    const responseCategory = await fetch ("https://fakestoreapi.com/products/categories");
+
+    if(!responseCategory.ok) {
+      
+      const html = await responseCategory.text();                                 
+
+      console.error("Categories API Error:", responseCategory.status, html);
+      return { notFound: true };
+    
+    }else {
+      categories = await responseCategory.json();
+    }
+  
+  }catch (error) {
+    console.error("FETCH FAILED:", error);
+  } 
+    return{
+        props :{
+            products,
+            categories
+        }
+    };
+};
+>>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223

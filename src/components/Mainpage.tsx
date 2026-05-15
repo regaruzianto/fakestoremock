@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import gambar from '../assets/gambar.png'
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import grill from '../assets/grill.png';
 import hedphone from '../assets/hedphone.png';
@@ -18,6 +18,8 @@ function Mainpage({products, categories} : CategoryProductsProps) {
   const [imageIndex,setImageIndex] = useState(0);
   const carouselImages = [gambar,grill,hedphone,hoodie,NB,relax];
   const interval = 3000;
+  const [productProps, setProductProps] = useState<ProductsData[]>([]);
+  const [categoryProps, setCategoryProps] = useState<string[]>([]);
 
 
   const handleClick = ()=>{
@@ -38,7 +40,28 @@ function Mainpage({products, categories} : CategoryProductsProps) {
 
     return () => clearInterval(slideInterval);
   }, [imageIndex, interval]);
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      const productResponse = await products();
+      setProductProps(productResponse);
+      console.log(productResponse);
+
+      const categoryResponse = await category();
+      setCategoryProps(categoryResponse);
+      console.log(categoryResponse);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+    fetchData();
+  }, []);
+
+
+
+
   return (
     <div>
 
