@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, useFormik } from 'formik';
 import * as Yup from "yup";
-import { loginUser } from '@/pages/api/Api';
+import { loginUser } from '@/api/Api';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import Alert from '@mui/material/Alert';

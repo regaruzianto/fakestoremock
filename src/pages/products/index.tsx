@@ -1,95 +1,192 @@
-import React from 'react';
-import { GetServerSideProps } from 'next';
-import { Card, CardContent, CardMedia, Grid, Grid2, Typography, Pagination, CardActionArea } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActionArea,
+
+} from '@mui/material';
+
+import Grid from '@mui/material/Grid2';
+
 import { ProductsData } from '@/Interface/interface';
 import { useRouter } from 'next/router';
-import { Category } from '@mui/icons-material';
+import { getCategory, getProducts } from '../../api/Api';
 
+function Products() {
+  const router = useRouter();
 
-interface PageProps {
-    products : ProductsData[];
-    categories : string[];
-}
+  const [products, setProducts] = useState<ProductsData[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getProducts();
 
+        // kalau api service sudah return response.data
+        setProducts(response.data);
 
-function Products({products,categories}: PageProps) {
-    const router = useRouter()
-    
-    const handleclick = (item: ProductsData) => {
-        router.push(`/products/${item.id}`)
-    }
+        console.log(response, 'product data');
+      } catch (error) {
+        console.error('failed fetch product', error);
+      }
+    };
 
-    const handleClickcategory = (category: string) => {
-        router.push(`/category/${category}`)
-    }
+    fetchProducts();
+  }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategory();
+
+        setCategories(response.data);
+
+        console.log(response, 'category data');
+      } catch (error) {
+        console.error('failed fetch category', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleClick = (item: ProductsData) => {
+    router.push(`/products/${item.id}`);
+  };
+
+  const handleClickCategory = (category: string) => {
+    router.push(`/category/${category}`);
+  };
 
   return (
-    <div className='flex flex-col items-center justify-center p-8 space-y-8 max-w-6xl m-auto'>
-        
-        <div>
-            <h1 className='m-2'>Category Products</h1>
-            <ul className='flex space-x-4 place-self-center'>
-                {categories.map((category) => (<li key={category} onClick={()=> handleClickcategory(category)} className='no-underline border-green-500 border-2 px-4 py-1 rounded-full hover:bg-green-500 hover:text-white cursor-pointer '>{category}</li>))}
-            </ul>
+    <div className='flex flex-col items-center justify-center p-8 space-y-8 max-w-7xl m-auto'>
+      
+      {/* CATEGORY */}
+      <div className='w-full text-center'>
+        <h1 className='text-2xl font-bold mb-4'>
+          Category Products
+        </h1>
 
-        </div>
-        <Grid2 container spacing={2} sx={{justifyContent : 'center'}}>
+        <ul className='flex flex-wrap gap-3 justify-center'>
+          {categories.map((category) => (
+            <li
+              key={category}
+              onClick={() => handleClickCategory(category)}
+              className='border-green-500 border-2 px-4 py-1 rounded-full hover:bg-green-500 hover:text-white cursor-pointer capitalize transition-all duration-200'
+            >
+              {category}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* PRODUCT GRID */}
+      <Grid
+        container
+        spacing={3}
+        justifyContent='center'
+        sx={{ width: '100%' }}
+      >
         {products.map((product) => (
-            <Grid key={product.id} xs={12} sm={6} md={4} lg={2}  >
-            <CardActionArea>
-                <Card onClick={()=>handleclick(product)}  sx={{ width: 200, height: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <CardMedia
-                    component="img"
-                    sx={{ height:"130px", objectFit: "contain"}}
-                    image={product.image}
-                    alt={product.title}
-                    />
-                    <CardContent sx={{ padding : '8px', width: '100%'}}>
-                        <Typography gutterBottom variant="h6" component="div" sx={{ height : '80px', letterSpacing : '0px', lineHeight : '1.1rem' ,fontSize : '0.85rem', textAlign:'left'}}>
-                            {product.title}
-                        </Typography>
+          <Grid            
+          key={product.id}
+            
+            sx={{
+              display: 'flex',
+              justifyContent: 'center'}}
+            size={3}
+          >
+            <Card
+              sx={{
+                width: '100%',
+                maxWidth: 250,
+                height: 340,
+                margin: 'auto',
+                borderRadius: '12px',
+                boxShadow: 3,
+                transition: '0.3s',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: 6,
+                },
+              }}
+            >
+              <CardActionArea
+                onClick={() => handleClick(product)}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  alignItems: 'stretch',
+                }}
+              >
+                <CardMedia
+                  component='img'
+                  image={product.image}
+                  alt={product.title}
+                  sx={{
+                    height: 180,
+                    objectFit: 'contain',
+                    padding: 2,
+                    backgroundColor: '#f5f5f5',
+                  }}
+                />
 
-                        <Typography variant="body2" color="text.primary" sx={{ height :'16px', textAlign: 'left', fontSize :"0.7rem", marginBottom: "0.35em"  }}>
-                            {product.category}
-                        </Typography>
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    width: '100%',
+                  }}
+                >
+                  <Typography
+                    gutterBottom
+                    variant='h6'
+                    sx={{
+                      height: 60,
+                      fontSize: '0.95rem',
+                      lineHeight: '1.2rem',
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                    }}
+                  >
+                    {product.title}
+                  </Typography>
 
-                        <Typography variant="body2" color="text.primary" sx={{ textAlign: 'left', fontSize :"0.9rem" }}>
-                        ${product.price}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                  <Typography
+                    variant='body2'
+                    color='text.secondary'
+                    sx={{
+                      textTransform: 'capitalize',
+                      mb: 1,
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {product.category}
+                  </Typography>
 
-            </CardActionArea>
-
-            </Grid>
-
+                  <Typography
+                    variant='h6'
+                    color='success.main'
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    ${product.price}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
         ))}
-        </Grid2>
-
-
-
-
-
+      </Grid>
     </div>
-  )
+  );
 }
 
-export default Products
-
-
-export const getServerSideProps: GetServerSideProps = async () => {
-    const response = await fetch ("https://fakestoreapi.com/products");
-    const products = await response.json();
-
-    const responseCategory = await fetch ("https://fakestoreapi.com/products/categories");
-    const categories = await responseCategory.json();
-   
-    return{
-        props :{
-            products,
-            categories
-        }
-    };
-};
+export default Products;

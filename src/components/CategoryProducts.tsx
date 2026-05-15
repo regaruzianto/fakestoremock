@@ -3,15 +3,11 @@ import { ProductsData } from '@/Interface/interface';
 import { Grid2, Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
 // import { useRouter, useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
+import { CategoryProductsProps } from '@/Interface/interface';
 
 
 
 
-interface CategoryProductsProps {
-  categories : string[],
-  products : ProductsData[],
-
-}
 
 
 function CategoryProducts({categories, products}: CategoryProductsProps) {

@@ -34,3 +34,9 @@ export interface UserProfileToken {
     role: string,
     avatar: string,
 }
+
+export interface CategoryProductsProps {
+  categories : string[],
+  products : ProductsData[],
+
+}

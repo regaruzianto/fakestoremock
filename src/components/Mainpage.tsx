@@ -7,10 +7,12 @@ import hedphone from '../assets/hedphone.png';
 import hoodie from '../assets/hoodie.png';
 import NB from '../assets/NB.png';
 import relax from '../assets/relax.png';
+import CategoryProducts from './CategoryProducts';
+import { CategoryProductsProps } from '@/Interface/interface';
 
 
 
-function Mainpage() {
+function Mainpage({products, categories} : CategoryProductsProps) {
 
   const router = useRouter();
   const [imageIndex,setImageIndex] = useState(0);
@@ -38,8 +40,12 @@ function Mainpage() {
   }, [imageIndex, interval]);
   
   return (
+    <div>
+
+    
     <div className="flex items-center justify-center my-6">
       <div className="flex w-full max-w-6xl p-4">
+        
         <div className="w-1/2 flex justify-center ">
           {/* <Image src={gambar} alt="Deskripsi Gambar" className="max-w-md object-cover" width={500} height={500} loading="lazy"/> */}
           <div className='carousel relative w-full max-w-lg overflow-hidden content-center'>
@@ -70,6 +76,9 @@ function Mainpage() {
         </div>
       </div>
     </div>
+      <CategoryProducts products={products} categories={categories} />
+    </div>
+
   );
 }
 

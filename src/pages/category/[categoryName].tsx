@@ -1,40 +1,75 @@
-import React from 'react'
-import { ProductsData } from '@/Interface/interface'
-import { GetServerSideProps } from 'next'
-import { useParams } from 'next/navigation'
-import CategoryProducts from '@/components/CategoryProducts'
+import React, { useEffect, useState } from 'react';
+import { ProductsData } from '@/Interface/interface';
+import { useRouter } from 'next/router';
 
+import CategoryProducts from '@/components/CategoryProducts';
 
-interface CategoryProductsProps {
-  categories : string[],
-  products : ProductsData[], 
-}
+import {
+  getCategory,
+  getProductByCategory,
+} from '../../api/Api';
 
-function categoryName({products,categories}:CategoryProductsProps) {
+function CategoryName() {
+  const router = useRouter();
 
+  const { categoryName } = router.query;
+
+  const [productData, setProductData] =
+    useState<ProductsData[]>([]);
+
+  const [categoryData, setCategoryData] =
+    useState<string[]>([]);
+
+  useEffect(() => {
+    if (!categoryName) return;
+
+    const fetchProductData = async () => {
+      try {
+        const response = await getProductByCategory(
+          categoryName as string
+        );
+
+        setProductData(response.data);
+
+        console.log(response, 'product by category data');
+      } catch (error) {
+        console.error(
+          'failed get product data',
+          error
+        );
+      }
+    };
+
+    fetchProductData();
+  }, [categoryName]);
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const response = await getCategory();
+
+        setCategoryData(response.data);
+
+        console.log(response, 'category data');
+      } catch (error) {
+        console.error(
+          'failed get category data',
+          error
+        );
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
 
   return (
     <div>
-        <CategoryProducts products={products} categories={categories} />
+      <CategoryProducts
+        products={productData}
+        categories={categoryData}
+      />
     </div>
-  )
+  );
 }
 
-export default categoryName
-
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
-    
-    const response = await fetch (`https://fakestoreapi.com/products/category/${params?.categoryName}`);
-    const products = await response.json();
-    console.log(products)
-    
-    const responseCategory = await fetch ("https://fakestoreapi.com/products/categories");
-    const categories = await responseCategory.json();
-    
-    return{
-        props :{
-            products,
-            categories
-        }
-    };
-}
+export default CategoryName;
