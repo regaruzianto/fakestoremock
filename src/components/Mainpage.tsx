@@ -9,6 +9,8 @@ import NB from '../assets/NB.png';
 import relax from '../assets/relax.png';
 import CategoryProducts from './CategoryProducts';
 import { CategoryProductsProps } from '@/Interface/interface';
+import { ProductsData } from '@/Interface/interface';
+import { getCategory, getProducts } from '@/api/Api';
 
 
 
@@ -44,12 +46,12 @@ function Mainpage({products, categories} : CategoryProductsProps) {
   useEffect(() => {
     const fetchData = async () => {
     try {
-      const productResponse = await products();
-      setProductProps(productResponse);
+      const productResponse = await getProducts();
+      setProductProps(productResponse.data);
       console.log(productResponse);
 
-      const categoryResponse = await category();
-      setCategoryProps(categoryResponse);
+      const categoryResponse = await getCategory();
+      setCategoryProps(categoryResponse.data);
       console.log(categoryResponse);
     } catch (error) {
       console.error("Fetch error:", error);
