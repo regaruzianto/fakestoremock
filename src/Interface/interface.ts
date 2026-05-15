@@ -39,8 +39,4 @@ export interface CategoryProductsProps {
   categories : string[],
   products : ProductsData[],
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
