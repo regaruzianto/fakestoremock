@@ -1,21 +1,14 @@
 import React from 'react'
+import Image from 'next/image';
 import { ProductsData } from '@/Interface/interface';
 import { Grid2, Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
 // import { useRouter, useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { CategoryProductsProps } from '@/Interface/interface';
-<<<<<<< HEAD
-=======
-import Image from 'next/image';
->>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
 
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
 
 function CategoryProducts({categories, products}: CategoryProductsProps) {
 

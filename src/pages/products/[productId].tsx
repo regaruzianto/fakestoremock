@@ -98,31 +98,3 @@ function productId() {
 
 export default productId
 
-<<<<<<< HEAD
-=======
-export const getServerSideProps: GetServerSideProps = async ({params}) => {
-
-    let products : ProductsData[] = [];
-    try {
-        const response = await fetch (`https://fakestoreapi.com/products/${params?.productId}`);
-
-        if (!response.ok) {
-            const html = await response.text();
-            console.error("Products API Error:", response.status, html);
-            return { notFound: true };
-        }
-
-        products = await response.json();
-
-    }catch(error){
-        console.log(error);
-    }
-
-    console.log(products)
-    return{
-        props :{
-            products,
-        }
-    };
-};
->>>>>>> 72e506e3ea50a17f8d409da11f77f680a3cc2223
